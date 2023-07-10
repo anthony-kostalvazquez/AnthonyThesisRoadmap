@@ -1,0 +1,182 @@
+\documentclass[11pt]{article}
+
+\usepackage{amsthm,amsmath,amssymb,amsfonts}
+\usepackage{enumitem, setspace}
+\usepackage{xcolor, soul, hyperref}
+\usepackage{pdfcomment}
+\usepackage[margin=1in]{geometry}
+
+\parindent 0pt
+\parskip 3mm
+\onehalfspacing
+
+
+\theoremstyle{definition}
+\newtheorem*{solution}{Solution}
+
+\begin{document}
+
+\begin{center}
+{\bf \Large Anthonys Thesis Roadmap}
+\end{center}
+
+\hrule 	
+
+\textbf{Name:} Anthony Kostal-Vazquez \\
+\textbf{Student ID:} 30048301
+
+\medskip \hrule
+
+\begin{enumerate}[leftmargin=\parindent,align=left,labelwidth=\parindent,labelsep=0pt]
+
+\item[] \textbf{Goal 0} --- Understand basic binary quadratic form background
+
+\begin{enumerate}
+    \item \st{Read Antons thesis} \href{Antons thesis.pdf}{Thesis Link}
+    \item \hl{Read Johannes Buchmann text} \href{Buchmann Algorithmic Approach to Binary Quadratic Forms.pdf}{Textbook Link}
+    \pdfcomment{Is this worth doing?}
+    \item \st{Show a reasonable certainty that the class number generating formulas will be an improvement}
+\end{enumerate}
+
+
+
+\item[] \textbf{Goal 1} --- Extend Polymult 1.4 to handle mod 24, mod 120, mod 720 and beyond
+
+\begin{enumerate}
+    \item{Understand how polymult 1.4 works}
+    \begin{itemize}
+        \item \st{Learn to code in C}
+        \item Read about polymult 1.3 in Antons thesis \href{Antons thesis.pdf}{Thesis Link}
+        \item Read polymult 1.3 documentation \href{polymult-1.3.pdf}{Decumentation Link}
+        \item Read polymult 1.4 documentation \href{jacobson_mosunov_-_tabulation.pdf}{Decumentation Link}
+        \item \st{Get running on local machine}
+        \item \st{Get running on ARC machine}
+    \end{itemize}
+
+    \item{Understand the class number formulas}
+    \begin{itemize}
+        \item Take Algebra 1 course equivalent \href{Syllabus _ Algebra I _ Mathematics _ MIT OpenCourseWare.pdf}{\hl{(Link to syllabus)}}
+        \pdfcomment{Does this have all the correct content}
+        
+        \item Read about original mod 8 formulas in Antons thesis \href{Antons thesis.pdf}{Thesis Link}
+        \item Read Bringmann and Kane paper \hl{(Need link to this)}
+        \pdfcomment{In this paper https://github.com/amosunov/polymult-1.4/blob/main/jacobson_mosunov_-_tabulation.pdf on page 2 it says By the result of Bringmann and Kane, "if a = (1 3 3)T , n = 7 (mod 8) and 9  n, then...." where can I find these results that are being referenced? and furthermore will I be able to understand them or do you recomend some further reading?}
+
+        \item Understand how the mod 24/120 formulas where created \href{jacobson_mosunov_-_tabulation.pdf}{Link to paper}
+        \item Create the mod 720 formulas
+        \item Test mod 120 and mod 720 formulas with robust and probably slow python polynomial multiplication program for correctness.
+        \pdfcomment{The modulo 120 formuals where not giving me correct results, I spent alot of time testing these and writing code to verify and found that it might be a notation error or polymult issue, need to settle this before moving on}
+
+    \end{itemize}
+
+    \item{Implement formulas into polymult 1.4}
+    \begin{itemize}
+        \item {Make new formulas compatible with bounds that are powers of two}
+        \pdfcomment{Currently to run the mod 24 formulas i have been using a bond of 3*2^n since we need to truncate these polynomials by dividing by 24. Polymult explicitly states that it will only work with powers of 2 however i found that this was not the case. I have two options here continue to run with non powers of 2 bounds and verify that this breaks nothing. Or i can modify the code to work with powers of 2 (Best solution i think however more complicated then one might imagine). This problem may also be unrelated to polymult and only be a problem with how clgrp 1.3 read polymult outputs. Thus I need to be certain that polymult is not to blame before moving forward. }
+        
+        \item {Give polymult the ability to initialize then add polynomials since this is required for the mod 120 formulas}
+        \pdfcomment{Already made a polyadd program that does this however i want to integrate it into polymult fully}
+
+        \item Figure out why the modulo 120 formulas will not work with polymult 1.4 
+        \pdfcomment{This maybe a bug or a problem with the initalization routines or a problem with the non-matching notation of polymult and the paper}
+
+        \item {Turn excel initialization routines into a scripting language} \href{Master_Sheet.xlsx}{(Link to excel sheets)}
+        \pdfcomment{In order to implement the initialization subroutines (check out the hyper link) I created these huge spreadsheets last year to automate it somewhat. I think this can be done better using bash scrips or perl.}
+        
+        \item Figure out why polymult 1.4 has such low cpu utilization on ARC 
+        \pdfcomment{The cpu utilization should be very high since it it multi threaded however its possible that alot of time is being spent saving files. This needs further investigation}
+
+        \item Test at scale 
+    \end{itemize}
+
+
+    \item \hl{Polish and publish library publicly} 
+    \pdfcomment{Is this published to ANTLL or somewhere else? }
+    
+    \begin{itemize}
+        \item Generalize so that polymult 1.4 can multiply not just theta and nabla series
+        \item Create documentation (basically extension of polymult 1.3 documentation)
+    \end{itemize}
+
+\end{enumerate}
+
+
+
+\item[] \textbf{Goal 2} --- Implement Sutherlands algorithm in Clgrp 1-3
+
+\begin{enumerate}
+    \item Understand how Clgrp 1.3 works
+    \begin{itemize}
+        \item Take Algebra 1 course equivalent \href{Syllabus _ Algebra I _ Mathematics _ MIT OpenCourseWare.pdf}{(Link to syllabus)}
+        \item Read about clgrp algorithms in Antons thesis \href{Antons thesis.pdf}{Thesis Link}
+        \item Read Clgrp Documentation \href{clgrp-1.3.pdf}{Documentation Link}
+        \item \st{Get running on local machine}
+        \item \st{Get running on ARC machine}
+    \end{itemize}
+
+    \item Ensure compatibility between polymult 1.4 library and Clgrp 1.3
+    \begin{itemize}
+        \item {Ensure that clgrp is able to take in the outputs of polymult}
+        \item \st{Fix the chinese remainder theorem subroutine so that m or n dont have to be powers of 2}
+    \end{itemize}
+
+    \item Ensure compatability with mod 120 and mod 720 formulas
+    \begin{itemize}
+        \item Make sure that n = 120 and n = 720 doesn't break anything 
+        \pdfcomment{Since 120, and 720 are not powers of 2 clgrp may have problems taking them as inputs.}
+
+        \item Fix the tabulation of 23mod120 
+        \pdfcomment{Last year Clgrp 1.3 was having problems running the tabulations for groups 23mod120 (These are the groups that do not have class numbers calculated) this will need to be addressed}
+
+        \item Fix the memory leak causing clgrp 1.3
+        \pdfcomment{When running Clgrp 1.3 on ARC the ram usage continually rises until it eventually crashes. This will need to be addressed}
+        \item Extend the verification to work with the new modulo breakdown
+    \end{itemize}
+
+
+    \item \hl{Learn what Sutherlands algorithm is}
+    \pdfcomment{Dont have any resources here}
+
+    \item \hl{Implement Sutherlands algorithm into clgrp 1.3}
+    \pdfcomment{Hard to know what needs to be done for this step until I understand clgrp}
+
+    \item Test Large scale on ARC (Specifically the h3mod8 tabulations seem to be tricky)
+    
+\end{enumerate}
+
+\item[] \textbf{Goal 3} --- Run tabulations beyond $2^{40}$
+
+\begin{enumerate}
+    \item Small scale testing
+    \item Recreation of $2^{40}$ result on ARC
+    \begin{itemize}
+        \item \st{Take the ARC class}
+        \item \st{learn how to use slurm scripts}
+    \end{itemize}
+
+    \item Run beyond $2^{40}$ on ARC 
+\end{enumerate}
+
+
+
+\item[] \textbf{Goal 4} --- Analyze Results 
+
+\begin{enumerate}
+    \item Find out how this was done for Antons tabulation
+\end{enumerate}
+
+\item[] \textbf{Goal 5} --- Write Thesis
+\begin{enumerate}
+    \item Learn to use latex
+\end{enumerate}
+
+
+\item[] \textbf{Goal 6} --- Defend Thesis
+
+\end{enumerate}
+
+
+
+
+
+\end{document}
